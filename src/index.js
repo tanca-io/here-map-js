@@ -6,8 +6,7 @@ import merge from "merge";
 const buildScriptURLs = (version = defaults.VERSION) => [
   `https://js.api.here.com/${version}/mapsjs-service.js`, // Service
   `https://js.api.here.com/${version}/mapsjs-ui.js`, // UI
-  `https://js.api.here.com/${version}/mapsjs-mapevents.js`, // Events
-  `https://js.api.here.com/${version}/mapsjs-places.js` // places
+  `https://js.api.here.com/${version}/mapsjs-mapevents.js` // Events
 ];
 
 const merger = options => merge(defaults, options);

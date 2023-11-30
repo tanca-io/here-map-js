@@ -2,10 +2,10 @@
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
 	(global = global || self, global.bundle = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
 	function unwrapExports (x) {
-		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+		return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 	}
 
 	function createCommonjsModule(fn, module) {
@@ -302,39 +302,34 @@
 
 		}
 
-	})(module && 'object' === 'object' && module.exports);
+	})( module && 'object' === 'object' && module.exports);
 	});
 
 	var buildScriptURLs = function buildScriptURLs() {
 	  var version = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaults.VERSION;
 	  return ["https://js.api.here.com/".concat(version, "/mapsjs-service.js"), // Service
 	  "https://js.api.here.com/".concat(version, "/mapsjs-ui.js"), // UI
-	  "https://js.api.here.com/".concat(version, "/mapsjs-mapevents.js"), // Events
-	  "https://js.api.here.com/".concat(version, "/mapsjs-places.js") // places
+	  "https://js.api.here.com/".concat(version, "/mapsjs-mapevents.js") // Events
 	  ];
 	};
-
 	var merger = function merger(options) {
 	  return merge(defaults, options);
 	};
-
 	var scriptLoader = function scriptLoader(options) {
 	  var _options = merger(options || {});
-
 	  var VERSION = _options.VERSION,
-	      version = _options.version,
-	      interactive = _options.interactive,
-	      includeUI = _options.includeUI,
-	      includePlaces = _options.includePlaces;
-
+	    version = _options.version,
+	    interactive = _options.interactive,
+	    includeUI = _options.includeUI,
+	    includePlaces = _options.includePlaces;
 	  var _v = version || VERSION;
+	  var urls = buildScriptURLs(_v);
 
-	  var urls = buildScriptURLs(_v); // First let us remove the events if it is not needed. PERFORMANCE!!!
-
-	  !interactive ? urls.splice(2, 1) : null; // Removes the UI if not needed
-
-	  !includeUI ? urls.splice(1, 1) : null; // Remove places if not needed
-
+	  // First let us remove the events if it is not needed. PERFORMANCE!!!
+	  !interactive ? urls.splice(2, 1) : null;
+	  // Removes the UI if not needed
+	  !includeUI ? urls.splice(1, 1) : null;
+	  // Remove places if not needed
 	  !includePlaces ? urls.splice(3, 1) : null;
 	  var coreURL = "https://js.api.here.com/".concat(_v, "/mapsjs-core.js");
 	  return getJs(coreURL).then(function () {
@@ -345,13 +340,12 @@
 	      link.setAttribute("href", "https://js.api.here.com/".concat(_v, "/mapsjs-ui.css"));
 	      document.getElementsByTagName("head")[0].append(link);
 	    }
-
 	    return getJs(urls);
-	  }).catch(function (error) {
+	  })["catch"](function (error) {
 	    console.log(error);
 	  });
 	};
 
 	return scriptLoader;
 
-}));
+})));
